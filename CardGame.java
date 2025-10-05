@@ -268,9 +268,24 @@ public class CardGame extends JComponent {
             if (e.getClickCount() == 2) {
 		System.out.println("Mouse double click event at ("+e.getX()+","+e.getY()+").");
                 // FILL IN
+                // Locate the pile and card under the mouse
+            pileUnderMouse = locatePile(e.getX(), e.getY());
+            if (pileUnderMouse == null) return;
+
+            cardUnderMouse = pileUnderMouse.locateCard(e.getX(), e.getY());
+            if (cardUnderMouse == null) return;
+
+            // Flip this card and all cards above it
+            ListIterator<Card> it = pileUnderMouse.listIterator();
+            boolean found = false;
+            while (it.hasNext()) {
+                Card c = it.next();
+                if (c == cardUnderMouse) found = true;
+                if (found) c.flipCard();
+            }
 		// What happens here when a pile is double clicked?
 		
-                repaint();
+            repaint();
             }
         }
 
@@ -281,6 +296,9 @@ public class CardGame extends JComponent {
         public void mousePressed(MouseEvent e) {
 	    // FILL IN
 	    // What happens here when the mouse is pressed?
+        pileUnderMouse = locatePile(e.getX(), e.getY());
+        //if (pileUnderMouse == null) return;
+        cardUnderMouse = pileUnderMouse.locateCard(e.getX(), e.getY());
         }
 
         /** Release event handler */
@@ -288,6 +306,19 @@ public class CardGame extends JComponent {
             if (movingPile != null) {
 		// FILL IN
                 // We have a pile coming to rest -- where? what happens?
+                CardPile targetPile = locatePile(e.getX(), e.getY());
+                Card targetCard = targetPile.locateCard(e.getX(), e.getY());
+
+                if (targetPile != null) {
+                 // Insert moving pile after that card
+                    targetPile.insertAfter(targetCard, movingPile);
+                }       
+                else {
+                    // Otherwise, just add all to the end
+                    targetPile.addAll(movingPile);
+                }
+
+                movingPile = null;  // Done dragging
 
             }
             repaint();
@@ -306,6 +337,17 @@ public class CardGame extends JComponent {
 	    // FILL IN
 	    // What happens when the mouse is dragged?
 	    // What if it is the first drag after a mouse down?
+            // If no pile is currently being moved, start a new drag
+            if (movingPile == null && pileUnderMouse != null) {
+                movingPile = pileUnderMouse.split(cardUnderMouse);
+            }
+
+            // Move pile with mouse
+            if (movingPile != null) {
+                movingPile.setX(e.getX() - 36);  // Adjust so pile centers under cursor
+                movingPile.setY(e.getY() - 48);
+                repaint();
+            }
         }
 
         /** Move event handler */

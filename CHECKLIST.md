@@ -32,7 +32,7 @@ _____ 1 pt: GUI program fully functional
 
 ## Kudos (Extra Challenge):
 
-______ Wrote version using SLL class for card pile
+__**NO**____ Wrote version using SLL class for card pile
 
 
 ## General Items:
