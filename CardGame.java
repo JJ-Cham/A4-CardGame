@@ -100,17 +100,9 @@ public class CardGame extends JComponent {
         // Verify
         System.out.println("Inserted " + testCard + " after " + marker);
 
-        // Card testCard = new Card(); // Ace of Spades, if your constructor is (suit,rank)
-        // Card marker = suffix2.get(5);
-        // suffix2.insertAfter(testCard, marker);
-        // ListIterator<Card> it2 = suffix2.listIterator();
-        // while (it2.hasNext()) {
-        //     Card c = it2.next();
-        //     if (c == marker) {
-        //         System.out.println("Card after marker is: " + it2.next()); // should be testCard
-        //         break;
-        //     }
-        // }
+        Responder responder = new Responder();
+        addMouseListener(responder);
+        addMouseMotionListener(responder);
 
         // Test iteratorAfter
         ListIterator<Card> pos = suffix2.iteratorAfter(marker);
@@ -311,7 +303,7 @@ public class CardGame extends JComponent {
 
                 if (targetPile != null) {
                  // Insert moving pile after that card
-                    targetPile.insertAfter(targetCard, movingPile);
+                    targetPile.insertAfter(targetCard, movingPile.getFirst());
                 }       
                 else {
                     // Otherwise, just add all to the end
