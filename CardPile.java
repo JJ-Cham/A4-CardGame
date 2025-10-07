@@ -128,6 +128,20 @@ public class CardPile extends LinkedList<Card> {
         }
     }
 
+    //adding code that was missing 
+    /**
+     * Find an iterator just before the mark
+     *
+     * @param mark New card goes before this one
+     */
+    public ListIterator<Card> iteratorBefore(Card mark) {
+        ListIterator<Card> position = listIterator(size());
+        while (position.hasPrevious() && (position.previous() != mark)) {
+            // keep going until we find our card
+        }
+        return position;
+    }
+
     /**
     * Return a ListIterator positioned just after the specified marker card.
     *
